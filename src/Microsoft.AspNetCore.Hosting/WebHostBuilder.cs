@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Microsoft.AspNetCore.Hosting
 {
@@ -238,7 +237,6 @@ namespace Microsoft.AspNetCore.Hosting
 
             _options = new WebHostOptions(_config);
 
-            var appEnvironment = PlatformServices.Default.Application;
             var contentRootPath = ResolveContentRootPath(_options.ContentRootPath, appEnvironment.ApplicationBasePath);
             var applicationName = _options.ApplicationName ?? appEnvironment.ApplicationName;
             var hostingContext = new WebHostBuilderContext
