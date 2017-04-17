@@ -27,26 +27,14 @@ namespace Microsoft.AspNetCore.Hosting
         /// </summary>
         IWebHost Build();
 
-        /// <summary>
-        /// Specify the <see cref="ILoggerFactory"/> to be used by the web host.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to be used.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
-        IWebHostBuilder UseLoggerFactory(ILoggerFactory loggerFactory);
+        // TODO: update these doc comments to indicate what may be null during configuration.
 
         /// <summary>
-        /// Specify the delegate that is used to configure the services of the web application.
+        /// Adds a delegate for configuring the <see cref="IConfigurationBuilder"/> that will construct an <see cref="IConfiguration"/>.
         /// </summary>
-        /// <param name="configureServices">The delegate that configures the <see cref="IServiceCollection"/>.</param>
+        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder" /> that will be used to construct an <see cref="IConfiguration" />.</param>
         /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
-        IWebHostBuilder ConfigureServices(Action<IServiceCollection> configureServices);
-
-        /// <summary>
-        /// Specify the delegate that is used to configure the services of the web application.
-        /// </summary>
-        /// <param name="configureServices">The delegate that configures the <see cref="IServiceCollection"/>.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
-        IWebHostBuilder ConfigureServices(Action<WebHostBuilderContext, IServiceCollection> configureServices);
+        IWebHostBuilder ConfigureAppConfiguration(Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate);
 
         /// <summary>
         /// Adds a delegate for configuring the provided <see cref="ILoggerFactory"/>. This may be called multiple times.
@@ -63,12 +51,18 @@ namespace Microsoft.AspNetCore.Hosting
         IWebHostBuilder ConfigureLogging<T>(Action<WebHostBuilderContext, T> configureLogging) where T : ILoggerFactory;
 
         /// <summary>
-        /// Add or replace a setting in the configuration.
+        /// Specify the delegate that is used to configure the services of the web application.
         /// </summary>
-        /// <param name="key">The key of the setting to add or replace.</param>
-        /// <param name="value">The value of the setting to add or replace.</param>
+        /// <param name="configureServices">The delegate that configures the <see cref="IServiceCollection"/>.</param>
         /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
-        IWebHostBuilder UseSetting(string key, string value);
+        IWebHostBuilder ConfigureServices(Action<IServiceCollection> configureServices);
+
+        /// <summary>
+        /// Specify the delegate that is used to configure the services of the web application.
+        /// </summary>
+        /// <param name="configureServices">The delegate that configures the <see cref="IServiceCollection"/>.</param>
+        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        IWebHostBuilder ConfigureServices(Action<WebHostBuilderContext, IServiceCollection> configureServices);
 
         /// <summary>
         /// Get the setting value from the configuration.
@@ -78,19 +72,26 @@ namespace Microsoft.AspNetCore.Hosting
         string GetSetting(string key);
 
         /// <summary>
+        /// Add or replace a setting in the configuration.
+        /// </summary>
+        /// <param name="key">The key of the setting to add or replace.</param>
+        /// <param name="value">The value of the setting to add or replace.</param>
+        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        IWebHostBuilder UseSetting(string key, string value);
+
+        /// <summary>
+        /// Specify the <see cref="ILoggerFactory"/> to be used by the web host.
+        /// </summary>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to be used.</param>
+        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        IWebHostBuilder UseLoggerFactory(ILoggerFactory loggerFactory);
+
+        /// <summary>
         /// Adds a delegate to construct the <see cref="ILoggerFactory"/> that will be registered
         /// as a singleton and used by the application.
         /// </summary>
         /// <param name="createLoggerFactory">The delegate that constructs an <see cref="IConfigurationBuilder" /></param>
         /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
         IWebHostBuilder UseLoggerFactory(Func<WebHostBuilderContext, ILoggerFactory> createLoggerFactory);
-
-
-        /// <summary>
-        /// Adds a delegate for configuring the <see cref="IConfigurationBuilder"/> that will construct an <see cref="IConfiguration"/>.
-        /// </summary>
-        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder" /> that will be used to construct an <see cref="IConfiguration" />.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
-        IWebHostBuilder ConfigureAppConfiguration(Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate);
     }
 }
